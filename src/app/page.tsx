@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid, Paper, CircularProgress } from "@mui/material";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+
 import "leaflet/dist/leaflet.css";
 import {
   LineChart,
@@ -16,8 +16,27 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import WeeklyForecastCard from "./weather/WeeklyForecastCard";
-import WeatherCard from "./weather/WeatherCard";
+//import WeatherCard from "./weather/WeatherCard";
 import ForecastCard from "./weather/ForecastCard";
+import dynamic from "next/dynamic";
+import "leaflet/dist/leaflet.css";
+
+// Dynamically import Leaflet components with SSR disabled
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  { ssr: false }
+);
+const Marker = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Marker),
+  { ssr: false }
+);
+const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
+  ssr: false,
+});
 
 interface CurrentWeather {
   temperature: number;
@@ -92,6 +111,7 @@ export default function Home() {
       try {
         setLoading(true);
         setError("");
+        if (typeof window === "undefined") return;
 
         // Try to get current location first
         const position = await new Promise<GeolocationPosition>(
@@ -150,6 +170,34 @@ export default function Home() {
 
     fetchMainLocationWeather();
   }, []);
+  // Safe map rendering function
+  const renderMap = () => {
+    if (typeof window === "undefined" || !mainWeatherData) return null;
+
+    return (
+      <MapContainer
+        center={[mainWeatherData.latitude, mainWeatherData.longitude]}
+        zoom={6}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        />
+        <Marker
+          position={[mainWeatherData.latitude, mainWeatherData.longitude]}
+        >
+          <Popup>{mainWeatherData.location.name}</Popup>
+        </Marker>
+      </MapContainer>
+    );
+  };
+
+  // Safe array access helper
+  const getArrayValue = <T,>(arr: T[], index: number): T | undefined => {
+    if (!arr || index < 0 || index >= arr.length) return undefined;
+    return arr[index];
+  };
 
   return (
     <Box sx={{ p: 2 }}>
@@ -164,11 +212,16 @@ export default function Home() {
 
       {mainWeatherData && (
         <Grid container spacing={2}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ height: 300, mb: 2 }}>{renderMap()}</Paper>
             <Paper sx={{ p: 2, mb: 2 }}>
-              <WeatherCard weather={mainWeatherData} />
+              <Typography variant="h6">Humidity</Typography>
+              <Typography>
+                {getArrayValue(mainWeatherData.hourly.relativehumidity_2m, 0) ??
+                  "N/A"}
+                %
+              </Typography>
             </Paper>
-
             <Paper sx={{ p: 2, mb: 2 }}>
               <Typography variant="h6" gutterBottom>
                 24-Hour Forecast
