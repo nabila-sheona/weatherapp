@@ -12,10 +12,7 @@ import {
   CircularProgress,
   Card,
   CardContent,
-  Button,
-  IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import {
   LineChart,
   Line,
@@ -121,7 +118,6 @@ export default function WeatherDashboard({
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [pinnedLocations, setPinnedLocations] = useState<WeatherData[]>([]);
 
   const otherCities = [
     { name: "New York", country: "USA" },
@@ -224,23 +220,6 @@ export default function WeatherDashboard({
     fetchOtherCities();
   }, []);
 
-  const handlePinLocation = () => {
-    if (
-      mainWeatherData &&
-      !pinnedLocations.some(
-        (loc) => loc.location.name === mainWeatherData.location.name
-      )
-    ) {
-      setPinnedLocations([...pinnedLocations, mainWeatherData]);
-    }
-  };
-
-  const handleUnpinLocation = (locationName: string) => {
-    setPinnedLocations(
-      pinnedLocations.filter((loc) => loc.location.name !== locationName)
-    );
-  };
-
   const renderMap = () => {
     if (typeof window === "undefined" || !mainWeatherData) return null;
 
@@ -280,25 +259,6 @@ export default function WeatherDashboard({
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <Paper sx={{ p: 2, mb: 2 }}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography variant="h6" gutterBottom>
-                  {mainWeatherData.location.name},{" "}
-                  {mainWeatherData.location.country}
-                </Typography>
-                <Button
-                  variant="outlined"
-                  onClick={handlePinLocation}
-                  disabled={pinnedLocations.some(
-                    (loc) => loc.location.name === mainWeatherData.location.name
-                  )}
-                >
-                  📌 Pin Location
-                </Button>
-              </Box>
               <WeatherCard weather={mainWeatherData} />
             </Paper>
 
@@ -307,6 +267,7 @@ export default function WeatherDashboard({
                 24-Hour Forecast for {mainWeatherData.location.name}
               </Typography>
 
+              {/* First 3 hours cards */}
               <Box sx={{ display: "flex", gap: 2, mb: 4, overflowX: "auto" }}>
                 {mainWeatherData.hourly.time
                   .map((time, index) => ({ time, index }))
@@ -342,6 +303,7 @@ export default function WeatherDashboard({
                   ))}
               </Box>
 
+              {/* 12-hour temperature chart */}
               <Typography variant="subtitle1" gutterBottom>
                 Temperature Trend (Next 12 Hours)
               </Typography>
@@ -400,36 +362,11 @@ export default function WeatherDashboard({
       )}
 
       <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-        Saved Locations
+        Other Locations
       </Typography>
       <Grid container spacing={2}>
-        {pinnedLocations.map((city, i) => (
-          <Grid item xs={12} sm={6} md={3} key={`pinned-${i}`}>
-            <Card>
-              <CardContent>
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography variant="h6" gutterBottom>
-                    {city.location.name}, {city.location.country}
-                  </Typography>
-                  <IconButton
-                    size="small"
-                    onClick={() => handleUnpinLocation(city.location.name)}
-                  >
-                    <CloseIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-                <WeatherCard weather={city} />
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-
         {otherWeather.map((city, i) => (
-          <Grid item xs={12} sm={6} md={3} key={`static-${i}`}>
+          <Grid item xs={12} sm={6} md={3} key={i}>
             <Card>
               <CardContent>
                 <Typography variant="h6" gutterBottom>

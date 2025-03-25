@@ -14,13 +14,15 @@
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
     "@types/leaflet": "^1.9.17",
+    "@uidotdev/usehooks": "^2.4.1",
     "date-fns": "^4.1.0",
     "leaflet": "^1.9.4",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-leaflet": "^5.0.0",
-    "recharts": "^2.15.1"
+    "recharts": "^2.15.1",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
