@@ -16,7 +16,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import WeeklyForecastCard from "./weather/WeeklyForecastCard";
-//import WeatherCard from "./weather/WeatherCard";
+import WeatherCard from "./weather/WeatherCard";
 import ForecastCard from "./weather/ForecastCard";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
@@ -209,18 +209,13 @@ export default function Home() {
 
       {loading && <CircularProgress sx={{ display: "block", mx: "auto" }} />}
       {error && <Typography color="error">{error}</Typography>}
-
       {mainWeatherData && (
         <Grid container spacing={2}>
-          <Grid item xs={12} md={4}>
-            <Paper sx={{ height: 300, mb: 2 }}>{renderMap()}</Paper>
+          {/* Main content column */}
+          <Grid item xs={12} md={8}>
+            {/* Weather card and forecast sections */}
             <Paper sx={{ p: 2, mb: 2 }}>
-              <Typography variant="h6">Humidity</Typography>
-              <Typography>
-                {getArrayValue(mainWeatherData.hourly.relativehumidity_2m, 0) ??
-                  "N/A"}
-                %
-              </Typography>
+              <WeatherCard weather={mainWeatherData} />
             </Paper>
             <Paper sx={{ p: 2, mb: 2 }}>
               <Typography variant="h6" gutterBottom>
@@ -297,6 +292,24 @@ export default function Home() {
               {mainWeatherData?.daily && (
                 <WeeklyForecastCard daily={mainWeatherData.daily} />
               )}
+            </Paper>
+          </Grid>
+
+          {/* Sidebar column */}
+          <Grid item xs={12} md={4}>
+            {/* Map container */}
+            <Paper sx={{ height: 300, mb: 2 }}>{renderMap()}</Paper>
+
+            {/* Humidity display */}
+            <Paper sx={{ p: 2, mb: 2 }}>
+              <Typography variant="h6" gutterBottom>
+                Current Humidity
+              </Typography>
+              <Typography variant="h4">
+                {getArrayValue(mainWeatherData.hourly.relativehumidity_2m, 0) ??
+                  "N/A"}
+                %
+              </Typography>
             </Paper>
           </Grid>
         </Grid>
