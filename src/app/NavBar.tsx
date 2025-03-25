@@ -1,7 +1,7 @@
 // app/NavBar.tsx
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   AppBar,
@@ -21,43 +21,12 @@ export default function NavBar() {
   const router = useRouter();
   const { toggleColorMode, mode } = React.useContext(ThemeModeContext);
   const [searchQuery, setSearchQuery] = useState("");
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Debounce search execution
-  const executeSearch = (query: string) => {
-    if (query.trim()) {
-      router.push(`/search?city=${encodeURIComponent(query.trim())}`);
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      router.push(`/search?city=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
     }
-  };
-
-  useEffect(() => {
-    // Clear existing timeout on each input change
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    // Set new timeout if there's a query
-    if (searchQuery.trim()) {
-      timeoutRef.current = setTimeout(() => {
-        executeSearch(searchQuery);
-      }, 500); // 500ms delay
-    }
-
-    // Cleanup on unmount
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [searchQuery]);
-
-  const handleManualSearch = () => {
-    // Immediate search for button click/Enter
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    executeSearch(searchQuery);
   };
 
   const handleGeolocation = () => {
@@ -102,9 +71,9 @@ export default function NavBar() {
             size="small"
             fullWidth
             sx={{ mr: 1 }}
-            onKeyPress={(e) => e.key === "Enter" && handleManualSearch()}
+            onKeyPress={(e) => e.key === "Enter" && handleSearch()}
           />
-          <IconButton onClick={handleManualSearch}>
+          <IconButton onClick={handleSearch}>
             <SearchIcon />
           </IconButton>
           <IconButton onClick={handleGeolocation}>
