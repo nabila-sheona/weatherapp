@@ -119,10 +119,7 @@ export default function WeatherDashboard({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const otherCities = [
-    { name: "New York", country: "USA" },
-    { name: "London", country: "UK" },
-  ];
+  const otherCities = ["New York", "London"]; // Simplified array
   const [otherWeather, setOtherWeather] = useState<WeatherData[]>([]);
 
   useEffect(() => {
@@ -194,23 +191,24 @@ export default function WeatherDashboard({
 
   useEffect(() => {
     const fetchOtherCities = async () => {
-      const promises = otherCities.map(async (city) => {
-        const geoRes = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-            city.name
-          )}&count=1`
-        );
-        const geoJson = await geoRes.json();
-        const { latitude, longitude, name, country } = geoJson.results[0];
-        const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=weathercode,temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto`
-        );
-        const weatherJson = await weatherRes.json();
-        return { ...weatherJson, location: { name, country } };
-      });
-
       try {
-        const results = await Promise.all(promises);
+        const results = await Promise.all(
+          otherCities.map(async (cityName) => {
+            const geoRes = await fetch(
+              `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
+                cityName
+              )}&count=1`
+            );
+            const geoJson = await geoRes.json();
+            const { latitude, longitude, name, country } = geoJson.results[0];
+
+            const weatherRes = await fetch(
+              `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=weathercode,temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto`
+            );
+            const weatherJson = await weatherRes.json();
+            return { ...weatherJson, location: { name, country } };
+          })
+        );
         setOtherWeather(results);
       } catch (err) {
         console.error("Failed fetching other cities:", err);
@@ -244,6 +242,10 @@ export default function WeatherDashboard({
     );
   };
 
+  // Helper function to safely access array indices
+  const getArrayValue = <T,>(arr: T[], index: number): T | undefined =>
+    index >= 0 && index < arr.length ? arr[index] : undefined;
+
   return (
     <Box sx={{ p: 2 }}>
       <Typography variant="h4" gutterBottom>
@@ -267,7 +269,6 @@ export default function WeatherDashboard({
                 24-Hour Forecast for {mainWeatherData.location.name}
               </Typography>
 
-              {/* First 3 hours cards */}
               <Box sx={{ display: "flex", gap: 2, mb: 4, overflowX: "auto" }}>
                 {mainWeatherData.hourly.time
                   .map((time, index) => ({ time, index }))
@@ -282,28 +283,38 @@ export default function WeatherDashboard({
                     );
                   })
                   .slice(0, 3)
-                  .map(({ time, index }) => (
-                    <Box key={time} sx={{ minWidth: 120 }}>
-                      <ForecastCard
-                        dateTime={new Date(time).getTime() / 1000}
-                        temp={mainWeatherData.hourly.temperature_2m[index]}
-                        weather={{
-                          id: mainWeatherData.hourly.weathercode[index],
-                          main: "Unknown",
-                          description:
-                            weatherDescriptions[
-                              mainWeatherData.hourly.weathercode[index]
-                            ] || "Unknown",
-                          icon: "",
-                        }}
-                        isHourly
-                        compact={false}
-                      />
-                    </Box>
-                  ))}
+                  .map(({ time, index }) => {
+                    const weatherCode = getArrayValue(
+                      mainWeatherData.hourly.weathercode,
+                      index
+                    );
+                    const temperature = getArrayValue(
+                      mainWeatherData.hourly.temperature_2m,
+                      index
+                    );
+
+                    return (
+                      <Box key={time} sx={{ minWidth: 120 }}>
+                        <ForecastCard
+                          dateTime={new Date(time).getTime() / 1000}
+                          temp={temperature ?? 0}
+                          weather={{
+                            id: weatherCode ?? 0,
+                            main: "Unknown",
+                            description:
+                              weatherCode !== undefined
+                                ? weatherDescriptions[weatherCode] ?? "Unknown"
+                                : "Unknown",
+                            icon: "",
+                          }}
+                          isHourly
+                          compact={false}
+                        />
+                      </Box>
+                    );
+                  })}
               </Box>
 
-              {/* 12-hour temperature chart */}
               <Typography variant="subtitle1" gutterBottom>
                 Temperature Trend (Next 12 Hours)
               </Typography>
@@ -316,7 +327,11 @@ export default function WeatherDashboard({
                           hour: "2-digit",
                           minute: "2-digit",
                         }),
-                        temp: mainWeatherData.hourly.temperature_2m[index],
+                        temp:
+                          getArrayValue(
+                            mainWeatherData.hourly.temperature_2m,
+                            index
+                          ) ?? 0,
                       }))
                       .filter((_, index) => index >= 3)
                       .slice(0, 12)}
@@ -354,7 +369,9 @@ export default function WeatherDashboard({
                 Current Humidity in {mainWeatherData.location.name}
               </Typography>
               <Typography variant="h4">
-                {mainWeatherData.hourly.relativehumidity_2m[0]}%
+                {getArrayValue(mainWeatherData.hourly.relativehumidity_2m, 0) ??
+                  "N/A"}
+                %
               </Typography>
             </Paper>
           </Grid>
