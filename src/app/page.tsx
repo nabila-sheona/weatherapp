@@ -299,31 +299,6 @@ export default function Home() {
               )}
             </Paper>
           </Grid>
-
-          <Grid item xs={12} md={4}>
-            <Paper sx={{ height: 300, mb: 2 }}>
-              {mainWeatherData && (
-                <MapContainer
-                  center={[mainWeatherData.latitude, mainWeatherData.longitude]}
-                  zoom={6}
-                  style={{ height: "100%", width: "100%" }}
-                >
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                  />
-                  <Marker
-                    position={[
-                      mainWeatherData.latitude,
-                      mainWeatherData.longitude,
-                    ]}
-                  >
-                    <Popup>{mainWeatherData.location.name}</Popup>
-                  </Marker>
-                </MapContainer>
-              )}
-            </Paper>
-          </Grid>
         </Grid>
       )}
     </Box>
