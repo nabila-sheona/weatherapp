@@ -323,13 +323,6 @@ export default function Home() {
                 </MapContainer>
               )}
             </Paper>
-
-            <Paper sx={{ p: 2, mb: 2 }}>
-              <Typography variant="h6">Humidity</Typography>
-              <Typography>
-                {mainWeatherData.hourly.relativehumidity_2m[0]}%
-              </Typography>
-            </Paper>
           </Grid>
         </Grid>
       )}
