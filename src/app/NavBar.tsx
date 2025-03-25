@@ -30,6 +30,8 @@ export default function NavBar() {
   };
 
   const handleGeolocation = () => {
+    if (typeof window === "undefined") return; // Add window check
+
     if (!navigator.geolocation) {
       alert("Geolocation not supported");
       return;
