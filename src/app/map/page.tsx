@@ -1,8 +1,8 @@
 // app/map/page.tsx
 "use client";
 
-import MapDashboard from "../MapDashboard";
+import WeatherDashboard from "../WeatherDashboard";
 
 export default function MapPage() {
-  return <MapDashboard />;
+  return <WeatherDashboard />;
 }
