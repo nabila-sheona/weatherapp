@@ -3,15 +3,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  Grid,
-  Paper,
-  CircularProgress,
-  Card,
-  CardContent,
-} from "@mui/material";
+import { Box, Typography, Grid, Paper, CircularProgress } from "@mui/material";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import {
@@ -95,12 +87,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const otherCities = [
-    { name: "New York", country: "USA" },
-    { name: "London", country: "UK" },
-  ];
-  const [otherWeather, setOtherWeather] = useState<WeatherData[]>([]);
-
   useEffect(() => {
     const fetchMainLocationWeather = async () => {
       try {
@@ -163,42 +149,6 @@ export default function Home() {
     };
 
     fetchMainLocationWeather();
-  }, []);
-
-  useEffect(() => {
-    const fetchOtherCities = async () => {
-      const promises = otherCities.map(async (city) => {
-        const geoRes = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-            city.name
-          )}&count=1`
-        );
-        if (!geoRes.ok) throw new Error("Geocoding failed");
-        const geoJson = await geoRes.json();
-        if (!geoJson.results?.length) throw new Error("No results");
-
-        const { latitude, longitude, name, country } = geoJson.results[0];
-        const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=weathercode,temperature_2m,relativehumidity_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto`
-        );
-        if (!weatherRes.ok) throw new Error("Weather fetch failed");
-        const weatherJson: WeatherData = await weatherRes.json();
-
-        return {
-          ...weatherJson,
-          location: { name, country },
-        };
-      });
-
-      try {
-        const results = await Promise.all(promises);
-        setOtherWeather(results);
-      } catch (err) {
-        console.error("Failed fetching other cities:", err);
-      }
-    };
-
-    fetchOtherCities();
   }, []);
 
   return (
@@ -330,24 +280,6 @@ export default function Home() {
           </Grid>
         </Grid>
       )}
-
-      <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-        Other Locations
-      </Typography>
-      <Grid container spacing={2}>
-        {otherWeather.map((city, i) => (
-          <Grid item xs={12} sm={6} md={3} key={i}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">
-                  {city.location.name}, {city.location.country}
-                </Typography>
-                <WeatherCard weather={city} />
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
     </Box>
   );
 }
