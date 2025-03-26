@@ -76,7 +76,7 @@ React 18
 
 TypeScript
 
-## UI & Visualization
+### UI & Visualization
 
 Material-UI (MUI)
 
@@ -86,7 +86,7 @@ React-Leaflet
 
 date-fns
 
-###APIs & Services
+### APIs & Services
 
 Open-Meteo Weather API
 
@@ -94,7 +94,7 @@ Mapbox Geocoding
 
 Browser Geolocation API
 
-###Build Tools
+### Build Tools
 
 Vite
 
