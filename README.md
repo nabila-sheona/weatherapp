@@ -66,7 +66,7 @@ Copy
 npm run dev
 # or
 yarn dev
-###🛠️ Technologies Used
+## 🛠️ Technologies Used
 
 Core Framework
 
@@ -76,7 +76,7 @@ React 18
 
 TypeScript
 
-###UI & Visualization
+## UI & Visualization
 
 Material-UI (MUI)
 
@@ -102,20 +102,20 @@ ESLint
 
 Prettier
 
-###🌐 Deployment
+## 🌐 Deployment
 Live Demo: https://weatherappx.onrender.com/
 
-###📄 License
+## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-###🙏 Acknowledgments
+## 🙏 Acknowledgments
 Open-Meteo for free weather API
 
 Mapbox for mapping services
 
-###MUI Community for UI components
+## MUI Community for UI components
 
 Vercel for Next.js framework
 
-##Happy Weather Tracking! ☀️🌧️❄️
+## Happy Weather Tracking! ☀️🌧️❄️
 
