@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WeatherX - Weather Dashboard
 
-## Getting Started
+![WeatherX Screenshot](https://weatherappx.onrender.com/og-image.png)  
+*Live Demo: [https://weatherappx.onrender.com/](https://weatherappx.onrender.com/)*
 
-First, run the development server:
+## 🌦️ Project Overview
+WeatherX is a feature-rich weather dashboard that provides real-time weather information, interactive forecasts, and an intuitive map interface. Built with Next.js and Material-UI, it offers:
 
-```bash
+- Current weather conditions
+- Hourly & 7-day forecasts
+- Interactive weather map
+- Location pinning functionality
+- Dark/Light mode toggle
+- Responsive design
+
+## ✨ Key Features
+
+### 🌍 Current Weather Dashboard
+- Real-time temperature and conditions
+- Wind speed and humidity display
+- "Feels like" temperature
+- 24-hour temperature graph
+
+### 📅 Forecast System
+- 3-hour incremental forecasts
+- 7-day extended forecast
+- Precipitation predictions
+- Interactive temperature charts
+
+### 🗺️ Interactive Map
+- Click-to-select location
+- Weather data overlay
+- Multiple marker support
+- Real-time weather updates
+
+### ⚙️ User Features
+- Location search with autocomplete
+- GPS-based detection
+- Multi-location pinning
+- Cross-device synchronization
+- Theme customization
+
+## 🚀 Installation
+
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/nabila-sheona/weatherapp.git
+   cd weatherapp
+Install Dependencies
+
+bash
+Copy
+npm install
+# or
+yarn install
+Environment Setup
+Create .env.local:
+
+env
+Copy
+NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token
+Run Development Server
+
+bash
+Copy
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🛠️ Technologies Used
+Core Framework
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Next.js 14
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+React 18
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+TypeScript
 
-## Learn More
+UI & Visualization
 
-To learn more about Next.js, take a look at the following resources:
+Material-UI (MUI)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Recharts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+React-Leaflet
 
-## Deploy on Vercel
+date-fns
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+APIs & Services
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open-Meteo Weather API
+
+Mapbox Geocoding
+
+Browser Geolocation API
+
+Build Tools
+
+Vite
+
+ESLint
+
+Prettier
+
+🌐 Deployment
+The application is deployed on Render.com using:
+
+Node.js 18+ environment
+
+Automatic Git integration
+
+Zero-downtime deployments
+
+SSL encryption
+
+Live Demo: https://weatherappx.onrender.com/
+
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+🙏 Acknowledgments
+Open-Meteo for free weather API
+
+Mapbox for mapping services
+
+MUI Community for UI components
+
+Vercel for Next.js framework
+
+Happy Weather Tracking! ☀️🌧️❄️
