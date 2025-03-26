@@ -66,7 +66,8 @@ Copy
 npm run dev
 # or
 yarn dev
-🛠️ Technologies Used
+###🛠️ Technologies Used
+
 Core Framework
 
 Next.js 14
@@ -75,7 +76,7 @@ React 18
 
 TypeScript
 
-UI & Visualization
+###UI & Visualization
 
 Material-UI (MUI)
 
@@ -85,7 +86,7 @@ React-Leaflet
 
 date-fns
 
-APIs & Services
+###APIs & Services
 
 Open-Meteo Weather API
 
@@ -93,7 +94,7 @@ Mapbox Geocoding
 
 Browser Geolocation API
 
-Build Tools
+###Build Tools
 
 Vite
 
@@ -101,29 +102,20 @@ ESLint
 
 Prettier
 
-🌐 Deployment
-The application is deployed on Render.com using:
-
-Node.js 18+ environment
-
-Automatic Git integration
-
-Zero-downtime deployments
-
-SSL encryption
-
+###🌐 Deployment
 Live Demo: https://weatherappx.onrender.com/
 
-📄 License
+###📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-🙏 Acknowledgments
+###🙏 Acknowledgments
 Open-Meteo for free weather API
 
 Mapbox for mapping services
 
-MUI Community for UI components
+###MUI Community for UI components
 
 Vercel for Next.js framework
 
-Happy Weather Tracking! ☀️🌧️❄️
+##Happy Weather Tracking! ☀️🌧️❄️
+
